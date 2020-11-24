@@ -1,0 +1,8 @@
+beautifulsoup4==4.9.3
+bs4==0.0.1
+pymongo==3.11.1
+python-dotenv==0.15.0
+requests==2.22.0
+requests-html==0.10.0
+dnspython==1.16.0
+
