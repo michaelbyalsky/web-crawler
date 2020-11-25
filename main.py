@@ -3,7 +3,7 @@ from requests_html import HTMLSession
 from pymongo import MongoClient
 import dotenv
 import os
-
+import arrow
 
 dotenv.load_dotenv()
 
@@ -74,7 +74,9 @@ def get_page_info(html):
         for span in li.findAll('span'):
             content += span.text
         content += '\n'    
-    date = html.find('div', class_='date').span.text
+    date_local = html.find('div', class_='date').span.text
+    replace_date = date_local.replace('th,', '')
+    date = str(arrow.get(replace_date, 'MMM D YYYY').to('UTC'))
     new_data = Paste(username, title, content, date)
     paste_obj = new_data.create_obj() 
     return paste_obj        
