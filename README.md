@@ -14,8 +14,8 @@
 * arrow
 
 ### How to start:
-* Install Docker.
-* Install Docker compose.
+* [Install Docker.](https://docs.docker.com/get-docker/)
+* [Install Docker compose.](https://docs.docker.com/compose/install/)
 * run docker-compose up in the terminal and wait till docker building all the images and running the containers.
 * After you will get the message "sucessfully connected to mongo" in your terminal, you can query the images from your docker mongo container.
 * To get all pastes from db while app is running:
