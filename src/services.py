@@ -8,6 +8,7 @@ def connect_to_mongodb():
         db = client.db
         collection = db["pastedb"]
         print('sucessfully connected to mongo')
+        return collection
     except Exception as e:
         print("exeption:", e)
-    return collection
+        return False

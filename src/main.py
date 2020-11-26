@@ -12,13 +12,17 @@ session = HTMLSession()
 ARCHIVE_URL = 'https://pastebin.com/archive'
 MAIN_URL = 'https://pastebin.com'
 
-
+## get the page html
 def fetch_page_html(url):
-    results = session.get(url)
-    parsed_html = BeautifulSoup(results.text, "html.parser")
-    return parsed_html
+    try:
+        results = session.get(url)
+        parsed_html = BeautifulSoup(results.text, "html.parser")
+        return parsed_html
+    except Exception as e:
+        print("error:", e)
+        return exit()    
 
-
+# get the links for the top pastes 
 def fetch_links_from_page(html):
     links = []
     table = html.find('table', class_='maintable')
@@ -29,7 +33,7 @@ def fetch_links_from_page(html):
             links.append(str(link['href']))
     return links
 
-
+## get paste from specific page
 def get_page_info(html):
     title, username, content, date = '', '', '', ''
     title_tag = html.find('div', class_='info-top')
@@ -55,34 +59,37 @@ def get_page_info(html):
 
 def insert_data_to_db(db_collection, data):
     try:
-        db_collection.insert_one(data)
-        return "new paste added"
+        count = db_collection.count_documents({
+           "Author": data["Author"],
+           "Title": data["Title"],
+           "Content": data["Content"],
+           "Date": data["Date"]   
+        })
+        if count == 0:
+            db_collection.insert_one(data)
+            return True
+        else:
+            return False    
     except Exception as e:
-        return e
-
-
-def remove_data_from_db(db_collection):
-    try:
-        db_collection.delete_many({})
-        return "data deleted- ready to replace"
-    except Exception as e:
-        return e
-
+        print("mongo error:",e)
+        return exit()
 
 def main():
-    print('scrawl started')
-    pastes_collection = connect_to_mongodb()
-    remove_msg = remove_data_from_db(pastes_collection)
-    print(remove_msg)
+    pastes_collection = connect_to_mongodb() # in case mongo failed to connect the function return False and process will exit
+    if pastes_collection == False:
+        return exit()
+    print('scrawl in process')
     parsed_html = fetch_page_html(ARCHIVE_URL)
     links = fetch_links_from_page(parsed_html)
+    new_items = 0
     for link in links:
         link_html = fetch_page_html(f'{MAIN_URL}{link}')
         obj = get_page_info(link_html)
-        insert_msg = insert_data_to_db(pastes_collection, obj)
-        print(insert_msg)    
-    print(f'scrawl finished- added {str(len(links))} new pastes')
-    time.sleep(120)
+        status = insert_data_to_db(pastes_collection, obj)
+        if status == True:
+            new_items += 1             
+    print(f'scrawl finished - added {new_items} new pastes')
+    time.sleep(120) # wait 2 minutes till the next scrawl
 
 
 if __name__ == '__main__':
