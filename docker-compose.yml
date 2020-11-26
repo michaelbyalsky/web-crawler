@@ -6,8 +6,6 @@ services:
     restart: unless-stopped
     command: mongod
     environment:
-      # MONGO_INITDB_ROOT_USERNAME: user
-      # MONGO_INITDB_ROOT_PASSWORD: password
       MONGO_INITDB_DATABASE: pastedb
       MONGODB_DATA_DIR: /data/db
       MONDODB_LOG_DIR: /dev/null
@@ -28,12 +26,9 @@ services:
       MONGODB_USERNAME: scrawler
       MONGODB_PASSWORD: scrawlerpassword
       MONGODB_HOSTNAME: mongodb
-    # volumes:
-    #   - appdata:/app  
     networks:
       - frontend
       - backend  
-
 networks:
   frontend:
     driver: bridge
