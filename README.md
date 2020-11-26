@@ -3,7 +3,7 @@
 ## welcome to my web scrawler application!
 
 ### Explanation: 
-* The crawller will search every 2 minutes for new pastes in https://pastebin.com
+* The crawller will search every 2 minutes for new pastes in https://pastebin.com.
 * In case he found some he will update the db.
 
 ### Technolegis and libraries:
