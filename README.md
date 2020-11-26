@@ -7,7 +7,7 @@
 * In case he found some he will update the db.
 
 ## Technolegis and libraries:
-* Docker and Docker compose
+* Docker and docker-compose
 * beautifulsoup4
 * pymongo docker image
 * requests
