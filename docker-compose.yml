@@ -28,8 +28,8 @@ services:
       MONGODB_USERNAME: scrawler
       MONGODB_PASSWORD: scrawlerpassword
       MONGODB_HOSTNAME: mongodb
-    volumes:
-      - appdata:/app  
+    # volumes:
+    #   - appdata:/app  
     networks:
       - frontend
       - backend  
