@@ -2,18 +2,18 @@
 
 ## welcome to my web scrawler application!
 
-### explanation: 
+### Explanation: 
 * The crawller will search every 2 minutes for new pastes in https://pastebin.com
 * In case he found some he will update the db.
 
-## Technolegis and libraries:
+### Technolegis and libraries:
 * Docker and docker-compose
 * beautifulsoup4
 * pymongo docker image
 * requests
 * arrow
 
-## How to start:
+### How to start:
 * Install Docker.
 * Install Docker compose.
 * run docker-compose up in the terminal and wait till docker building all the images and running the containers.
