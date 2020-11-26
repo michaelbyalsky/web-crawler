@@ -57,6 +57,7 @@ def insert_data_to_db(db_collection, data):
     try:
         db_collection.insert_one(data)
         return "new paste added"
+        exit()
     except Exception as e:
         return e
 
