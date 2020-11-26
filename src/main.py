@@ -10,9 +10,9 @@ import time
 dotenv.load_dotenv()
 session = HTMLSession()
 
-user = os.getenv('MONGO_INITDB_ROOT_USERNAME')
-password = os.getenv('MONGO_INITDB_ROOT_PASSWORD')
-mongo_url = f'mongodb+srv://{user}:{password}@cluster0.d9oxu.mongodb.net/scrawler?retryWrites=true&w=majority'
+# user = os.getenv('MONGO_INITDB_ROOT_USERNAME')
+# password = os.getenv('MONGO_INITDB_ROOT_PASSWORD')
+# mongo_url = f'mongodb+srv://{user}:{password}@cluster0.d9oxu.mongodb.net/scrawler?retryWrites=true&w=majority'
 
 ARCHIVE_URL = 'https://pastebin.com/archive'
 MAIN_URL = 'https://pastebin.com'
@@ -70,22 +70,21 @@ def insert_data_to_db(db_collection, data):
 def remove_data_from_db(db_collection):
     try:
         db_collection.delete_many({})
+        return 'data succefully updated, check your db for new data' 
     except Exception as e:
-        print(e)
-    return 'data succefully updated, check your db for new data'    
+        return e
 
 
 def main():
     print('scrawl started')
-    pastes_collection = connect_to_mongodb(mongo_url)
+    pastes_collection = connect_to_mongodb()
     remove_data_from_db(pastes_collection)
     parsed_html = fetch_page_html(ARCHIVE_URL)
     links = fetch_links_from_page(parsed_html)
     for link in links:
         link_html = fetch_page_html(f'{MAIN_URL}{link}')
         obj = get_page_info(link_html)
-        db_message = insert_data_to_db(pastes_collection, obj)
-        print(db_message)
+        insert_data_to_db(pastes_collection, obj)
     print('scrawl finished')
     time.sleep(120)
 
