@@ -22,7 +22,7 @@ def fetch_page_html(url):
         print("error:", e)
         return exit()    
 
-# get the links for the top pastes 
+## get the links for the top pastes 
 def fetch_links_from_page(html):
     links = []
     table = html.find('table', class_='maintable')
@@ -56,7 +56,7 @@ def get_page_info(html):
     paste_obj = new_data.create_obj()
     return paste_obj
 
-
+## insert only new pastes into db
 def insert_data_to_db(db_collection, data):
     try:
         count = db_collection.count_documents({
