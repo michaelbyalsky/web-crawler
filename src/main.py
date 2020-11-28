@@ -87,7 +87,7 @@ def main():
         obj = get_page_info(link_html)
         status = insert_data_to_db(pastes_collection, obj)
         if status == True:
-            new_items += 1             
+            new_items += 1   
     print(f'scrawl finished - added {new_items} new pastes')
     time.sleep(120) # wait 2 minutes till the next scrawl
 

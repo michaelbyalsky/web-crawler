@@ -26,12 +26,11 @@ services:
       MONGODB_USERNAME: scrawler
       MONGODB_PASSWORD: scrawlerpassword
       MONGODB_HOSTNAME: mongodb
+    volumes:
+      - ./src:/app/src  
     networks:
-      - frontend
       - backend  
 networks:
-  frontend:
-    driver: bridge
   backend:
     driver: bridge  
 
