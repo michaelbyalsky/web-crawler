@@ -6,6 +6,7 @@ from requests_html import HTMLSession
 
 session = HTMLSession()
 
+
 class Page:
 
     ## get the page html
@@ -51,38 +52,27 @@ class Page:
         date_local = self.parsed_page.find('div', class_='date').span.text
         replace_date = date_local.replace('th,', '')
         date = str(arrow.get(replace_date, 'MMM D YYYY').to('UTC'))
-        return Paste(username, title, content, date)
+        new_paste = Paste(username, title, content, date)
+        return new_paste.create_object()
                
 
 
 class Paste:
+    
     def __init__(self, Author='', Title='', Content='', Date=''):
         self.Author = Author
         self.Title = Title
         self.Content = Content
         self.Date = Date  
 
-    # insert only new pastes
-    def insert_to_db(self, collection):
-        data = {
-            "Author": self.Author,
+    def create_object(self):
+        return {"Author": self.Author,
             "Title": self.Title,
             "Content": self.Content,
-            "Date": self.Date      
-        }
-        try:
-            count = collection.count_documents(data)
-            if count == 0:
-                collection.insert_one(data)
-                return True
-            else:
-                return False    
-        except Exception as e:
-            print("mongo error:",e)
-            return exit()   
+            "Date": self.Date}
 
-
-class Db:
+    
+class Db_Connection:
 
     def __init__(self, connction_string, collection):
         self.connction_string = connction_string
@@ -98,4 +88,24 @@ class Db:
         except Exception as e:
             print("exeption:", e)
             return False
+
+class Db_Actions:
+
+    def __init__(self, collection):
+        self.collection = collection
+
+    # insert only new pastes
+    def insert(self, data):
+        try:
+            count = self.collection.count_documents(data)
+            if count == 0:
+                self.collection.insert_one(data)
+                return True
+            else:
+                return False    
+        except Exception as e:
+            print("mongo error:",e)
+            return exit()   
+
+
 

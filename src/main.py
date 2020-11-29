@@ -1,4 +1,4 @@
-from models import Paste, Db, Page
+from models import Paste, Db_Connection, Db_Actions, Page
 import time
 import os
 
@@ -6,10 +6,10 @@ ARCHIVE_URL = 'https://pastebin.com/archive'
 MAIN_URL = 'https://pastebin.com'
 CONNECTION_STRING = f"mongodb://{os.environ['MONGODB_USERNAME']}:{os.environ['MONGODB_PASSWORD']}@{os.environ['MONGODB_HOSTNAME']}:27017/{os.environ['MONGODB_DATABASE']}"
 
-            
 def main():
-    new_db = Db(CONNECTION_STRING, "pastedb") # in case mongo failed to connect the function return False and process will exit
-    pastes_collection = new_db.connect()
+    new_db = Db_Connection(CONNECTION_STRING, "pastedb") # in case mongo failed to connect the function return False and process will exit
+    pastes_collection_connection = new_db.connect()
+    pastes_collection = Db_Actions(pastes_collection_connection)
     if pastes_collection == False:
         return exit()
     print('scrawl in process')
@@ -19,7 +19,7 @@ def main():
     for link in links:
         internal_page = Page.fetch_page_html(f'{MAIN_URL}{link}')
         new_paste = internal_page.get_page_info()
-        status = new_paste.insert_to_db(pastes_collection)
+        status = pastes_collection.insert(new_paste)
         if status == True:
             new_items += 1   
     print(f'scrawl finished - added {new_items} new pastes')
