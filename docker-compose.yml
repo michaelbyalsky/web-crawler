@@ -18,6 +18,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    container_name: scrawler  
     depends_on:
       - mongodb  
     command: python -u src/main.py
