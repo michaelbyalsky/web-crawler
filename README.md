@@ -22,7 +22,7 @@
 1. docker exec -it mongodb bash
 2. mongo
 3. show dbs
-4. use scrawler
+4. use db
 5. db.pastes.find({}) - will give you all the pastes
 * If you want to stop the app, press ^C in your docker-compose terminal. 
 
